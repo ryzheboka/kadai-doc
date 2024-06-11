@@ -16,7 +16,7 @@ import Link from '@docusaurus/Link';
 In order to set up the example, please install:
 
 - an IDE of your choice (preferably IntelliJ)
-- Java 11
+- Java 17
 - maven
 - optional: [postman](https://www.postman.com/) (makes REST API requests easier)
 
@@ -27,7 +27,7 @@ Note: Please name your packages, folders and files exactly like in the example!
 ### Step 1: Initialize an empty project
 
 Go to [Spring Initializer](https://start.spring.io/) and create an example Maven Project. Choose the
-same options as in the Screenshot, except the spring version. Please check Java 11, then click on "
+same options as in the Screenshot, except the spring version. Please check Java 17, then click on "
 Generate".
 
 ![empty spring boot project](../static/getting-started/project-initializer.png)
@@ -70,17 +70,17 @@ of step 2. After adding the dependencies, please reload maven and recompile the 
 <dependency>
     <groupId>pro.taskana</groupId>
     <artifactId>taskana-common-data</artifactId>
-    <version>6.0.2</version>
+    <version>8.1.0</version>
 </dependency>
 <dependency>
     <groupId>pro.taskana</groupId>
     <artifactId>taskana-common-logging</artifactId>
-    <version>6.0.2</version>
+    <version>8.1.0</version>
 </dependency>
 <dependency>
     <groupId>pro.taskana</groupId>
     <artifactId>taskana-rest-spring</artifactId>
-    <version>6.0.2</version>
+    <version>8.1.0</version>
 </dependency>
 ```
 
@@ -108,17 +108,17 @@ of step 2. After adding the dependencies, please reload maven and recompile the 
 <dependency>
     <groupId>pro.taskana</groupId>
     <artifactId>taskana-common-logging</artifactId>
-    <version>6.0.2</version>
+    <version>8.1.0</version>
 </dependency>
 <dependency>
     <groupId>pro.taskana</groupId>
     <artifactId>taskana-rest-spring</artifactId>
-    <version>6.0.2</version>
+    <version>8.1.0</version>
 </dependency>
 <dependency>
     <groupId>pro.taskana</groupId>
     <artifactId>taskana-common-data</artifactId>
-    <version>6.0.2</version>
+    <version>8.1.0</version>
 </dependency>
 <dependency>
     <groupId>com.h2database</groupId>
@@ -142,7 +142,7 @@ You need to add following content into that file:
 
 ```
 logging.level.pro.taskana=INFO
-logging.level.org.springframework.security=INFO
+logging.level.org.springframework=INFO
 server.servlet.context-path=/taskana
 taskana.routing.dmn.upload.path=/tmp/routing.dmn
 ######## Taskana DB #######
@@ -161,10 +161,15 @@ taskana.schemaName=TASKANA
 ########spring.datasource.username=db2inst1
 ########spring.datasource.password=db2inst1-pwd
 ######## Postgres configuration ########
-########spring.datasource.url=jdbc:postgresql://localhost:5102/taskana
+########spring.datasource.url=jdbc:postgresql://localhost:5102/postgres
 ########spring.datasource.driverClassName=org.postgresql.Driver
 ########spring.datasource.username=postgres
-########spring.datasource.password=1234
+########spring.datasource.password=postgres
+######## ORACLE configuration ########
+########spring.datasource.url=jdbc:oracle:thin:@//localhost:5103/TASKANA
+########spring.datasource.driverClassName=oracle.jdbc.OracleDriver
+########spring.datasource.username=TEST_USER
+########spring.datasource.password=testPassword
 ########spring.jpa.generate-ddl=true
 ########spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation=true
 ####### property that control rest api security deploy use true for no security.
@@ -173,8 +178,6 @@ devMode=true
 enableCsrf=false
 ####### property that control if the database is cleaned and sample data is generated
 generateSampleData=true
-####### JobScheduler cron expression that specifies when the JobSchedler runs
-taskana.jobscheduler.async.cron=0 * * * * *
 ####### cache static resources properties
 spring.web.resources.cache.cachecontrol.cache-private=true
 ####### for upload of big workbasket- or classification-files
@@ -211,6 +214,7 @@ taskana.ldap.userOrglevel3Attribute=someDepartement
 taskana.ldap.userOrglevel4Attribute=orgLevel4
 taskana.ldap.userIdAttribute=uid
 taskana.ldap.userMemberOfGroupAttribute=memberOf
+taskana.ldap.userPermissionsAttribute=permission
 taskana.ldap.groupSearchBase=
 taskana.ldap.groupSearchFilterName=objectclass
 taskana.ldap.groupSearchFilterValue=groupofuniquenames
@@ -279,7 +283,7 @@ taskana.jobs.cleanup.history.simple.enable=false
 ### Step 4: Add rest configuration
 
 First, Add ```@ComponentScan({"pro.taskana","com.example"})``` as annotation above the class
-definition of the ExampleApplication and acorresponding import to this class. This will allow the
+definition of the ExampleApplication and a corresponding import to this class. This will allow the
 apllication to find needed components.
 
 Then, create a java class with the name ```ExampleRestConfiguration``` in the com.example.demo
@@ -449,10 +453,15 @@ import java.util.function.Function;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpMethod;
 import org.springframework.ldap.core.support.BaseLdapPathContextSource;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
+import org.springframework.security.config.annotation.web.configurers.RequestCacheConfigurer;
 import org.springframework.security.config.ldap.LdapPasswordComparisonAuthenticationManagerFactory;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -500,38 +509,66 @@ public class BootWebSecurityConfigurer {
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-    HttpSecurity httpSecurity =
-        http.authorizeRequests()
-            .antMatchers("/css/**", "/img/**")
-            .permitAll()
-            .and()
-            .authorizeRequests()
-            .antMatchers(HttpMethod.GET, "/docs/**")
-            .permitAll()
-            .and()
-            .addFilter(jaasApiIntegrationFilter())
-            .addFilterAfter(new SpringSecurityToJaasFilter(), JaasApiIntegrationFilter.class);
+    http.authorizeHttpRequests(
+            authorizeHttpRequests ->
+                authorizeHttpRequests
+                    .requestMatchers("/css/**", "/img/**")
+                    .permitAll()
+                    .requestMatchers(HttpMethod.GET, "/docs/**")
+                    .permitAll())
+        .cors(Customizer.withDefaults())
+        .addFilter(jaasApiIntegrationFilter())
+        .addFilterAfter(new SpringSecurityToJaasFilter(), JaasApiIntegrationFilter.class);
 
     if (enableCsrf) {
       CookieCsrfTokenRepository csrfTokenRepository = CookieCsrfTokenRepository.withHttpOnlyFalse();
       csrfTokenRepository.setCookiePath("/");
-      httpSecurity.csrf().csrfTokenRepository(csrfTokenRepository);
+      http.csrf(
+              csrf ->
+                  csrf.csrfTokenRepository(csrfTokenRepository)
+                      .csrfTokenRequestHandler(new SpaCsrfTokenRequestHandler()))
+          .addFilterAfter(new CsrfCookieFilter(), SpringSecurityToJaasFilter.class);
     } else {
-      httpSecurity.csrf().disable().httpBasic();
+      http.csrf(AbstractHttpConfigurer::disable).httpBasic(Customizer.withDefaults());
     }
 
     if (devMode) {
-      http.headers()
-          .frameOptions()
-          .sameOrigin()
-          .and()
-          .authorizeRequests()
-          .antMatchers("/h2-console/**")
-          .permitAll();
+      http.headers(
+              headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
+          .authorizeHttpRequests(
+              authorizeHttpRequests ->
+                  authorizeHttpRequests
+                      .requestMatchers("/h2-console/**")
+                      .permitAll()
+                      .anyRequest()
+                      .fullyAuthenticated())
+          .logout(logout -> logout.logoutSuccessUrl("http://localhost:4200/#").permitAll());
     } else {
       addLoginPageConfiguration(http);
     }
+    http.requestCache(RequestCacheConfigurer::disable);
     return http.build();
+  }
+
+  protected void addLoginPageConfiguration(HttpSecurity http) throws Exception {
+    http.authorizeHttpRequests(
+            authorizeHttpRequests -> authorizeHttpRequests.anyRequest().fullyAuthenticated())
+        .formLogin(
+            formLogin ->
+                formLogin
+                    .loginPage("/login")
+                    .failureUrl("/login?error")
+                    .defaultSuccessUrl("/index.html")
+                    .permitAll())
+        .logout(
+            logout ->
+                logout
+                    .invalidateHttpSession(true)
+                    .clearAuthentication(true)
+                    .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                    .logoutSuccessUrl("/login?logout")
+                    .deleteCookies("JSESSIONID")
+                    .permitAll());
   }
 
   @Bean
@@ -562,26 +599,6 @@ public class BootWebSecurityConfigurer {
     return grantedAuthoritiesMapper;
   }
 
-  protected void addLoginPageConfiguration(HttpSecurity http) throws Exception {
-    http.authorizeRequests()
-        .anyRequest()
-        .fullyAuthenticated()
-        .and()
-        .formLogin()
-        .loginPage("/login")
-        .failureUrl("/login?error")
-        .defaultSuccessUrl("/")
-        .permitAll()
-        .and()
-        .logout()
-        .invalidateHttpSession(true)
-        .clearAuthentication(true)
-        .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-        .logoutSuccessUrl("/login?logout")
-        .deleteCookies("JSESSIONID")
-        .permitAll();
-  }
-
   protected JaasApiIntegrationFilter jaasApiIntegrationFilter() {
     JaasApiIntegrationFilter filter = new JaasApiIntegrationFilter();
     filter.setCreateEmptySubject(true);
@@ -605,6 +622,87 @@ public class BootWebSecurityConfigurer {
 
 ```
 
+Create ```CsrfCookieFilter.java``` in the security folder and copy following content into it:
+
+```
+package com.example.demo.security;
+
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import org.springframework.security.web.csrf.CsrfToken;
+import org.springframework.web.filter.OncePerRequestFilter;
+
+final class CsrfCookieFilter extends OncePerRequestFilter {
+
+  @Override
+  protected void doFilterInternal(
+      HttpServletRequest request,
+      @SuppressWarnings("NullableProblems") HttpServletResponse response,
+      FilterChain filterChain)
+      throws ServletException, IOException {
+    CsrfToken csrfToken = (CsrfToken) request.getAttribute("_csrf");
+    // Render the token value to a cookie by causing the deferred token to be loaded
+    csrfToken.getToken();
+
+    filterChain.doFilter(request, response);
+  }
+}
+
+```
+
+Lastly, create ```SpaCsrfTokenRequestHandler.java``` in the security folder and copy following content into it:
+
+```
+package com.example.demo.security;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.util.function.Supplier;
+import org.springframework.security.web.csrf.CsrfToken;
+import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
+import org.springframework.security.web.csrf.CsrfTokenRequestHandler;
+import org.springframework.security.web.csrf.XorCsrfTokenRequestAttributeHandler;
+import org.springframework.util.StringUtils;
+
+final class SpaCsrfTokenRequestHandler extends CsrfTokenRequestAttributeHandler {
+  private final CsrfTokenRequestHandler delegate = new XorCsrfTokenRequestAttributeHandler();
+
+  @Override
+  public void handle(
+      HttpServletRequest request, HttpServletResponse response, Supplier<CsrfToken> csrfToken) {
+    /*
+     * Always use XorCsrfTokenRequestAttributeHandler to provide BREACH protection of
+     * the CsrfToken when it is rendered in the response body.
+     */
+    this.delegate.handle(request, response, csrfToken);
+  }
+
+  @Override
+  public String resolveCsrfTokenValue(HttpServletRequest request, CsrfToken csrfToken) {
+    /*
+     * If the request contains a request header, use CsrfTokenRequestAttributeHandler
+     * to resolve the CsrfToken. This applies when a single-page application includes
+     * the header value automatically, which was obtained via a cookie containing the
+     * raw CsrfToken.
+     */
+    if (StringUtils.hasText(request.getHeader(csrfToken.getHeaderName()))) {
+      return super.resolveCsrfTokenValue(request, csrfToken);
+    }
+    /*
+     * In all other cases (e.g. if the request contains a request parameter), use
+     * XorCsrfTokenRequestAttributeHandler to resolve the CsrfToken. This applies
+     * when a server-side rendered form includes the _csrf request parameter as a
+     * hidden input.
+     */
+    return this.delegate.resolveCsrfTokenValue(request, csrfToken);
+  }
+}
+
+```
+
 ### Step 8: Add ExampleWebSecurityConfig.java
 
 ExampleWebSecurityConfig specifies beans that are used for authorization by spring.
@@ -614,25 +712,17 @@ there:
 ```
 package com.example.demo.security;
 
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class ExampleWebSecurityConfig {
 
   @Bean
-  public WebMvcConfigurer corsConfigurer() {
-    return new CorsWebMvcConfigurer();
-  }
-
-  @Bean
-  public FilterRegistrationBean<CorsFilter> corsFilter() {
+  public CorsConfigurationSource corsConfigurationSource() {
     final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     CorsConfiguration config = new CorsConfiguration();
     config.setAllowCredentials(true);
@@ -640,17 +730,7 @@ public class ExampleWebSecurityConfig {
     config.addAllowedHeader("*");
     config.addAllowedMethod("*");
     source.registerCorsConfiguration("/**", config);
-    FilterRegistrationBean<CorsFilter> bean = new FilterRegistrationBean<>(new CorsFilter(source));
-    bean.setOrder(0);
-    return bean;
-  }
-
-  private static class CorsWebMvcConfigurer implements WebMvcConfigurer {
-
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-      registry.addMapping("/**").allowedOrigins("*");
-    }
+    return source;
   }
 }
 ```
@@ -709,7 +789,7 @@ Add following dependencies to your pom and reload maven:
 <dependency>
     <groupId>pro.taskana</groupId>
     <artifactId>taskana-web</artifactId>
-    <version>6.0.2</version>
+    <version>8.1.0</version>
 </dependency>
 <dependency>
     <groupId>org.springframework.boot</groupId>
@@ -886,7 +966,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 import java.util.List;
 
 /**
@@ -898,7 +978,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     private static final String[] CLASSPATH_RESOURCE_LOCATIONS = {
             "classpath:/META-INF/resources/", "classpath:/resources/",
-            "classpath:/static/", "classpath:/public/"
+            "classpath:/static/", "classpath:/public/", "classpath:/templates/"
     };
 
     private final ObjectMapper objectMapper;
