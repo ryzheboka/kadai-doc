@@ -86,10 +86,12 @@ KadaiEngineConfiguration(DataSource dataSource, boolean useManagedTransactions,
 
 In the spring boot example, you can add following bean in order to disable security:
 
+```
     @Bean
     public KadaiEngineConfiguration kadaiEngineConfiguration(DataSource dataSource) {
         return new SpringKadaiEngineConfiguration(dataSource, true, false, "KADAI");
     }
+```
 
 The CONFIGURATION table has a ENFORCE_SECURITY field. If this field is already set, then
 *securityEnabled* should be set to the same value. If the ENFORCE_SECURITY flag in the database has
