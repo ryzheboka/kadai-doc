@@ -54,8 +54,8 @@ Prerequisites:
 
 Example Scenario:
 - An envelope containing a letter '*Extend Contract*' describing a Task, and another document '*Contract of Max Mustermann*' attached to the letter, is received on 01-11-2023.  
-- On the next day, the letter '*Extend Contract*' is then scanned with an OCR reader, which creates a Task in TASKANA. The task has a deadline of 10-11-2023 and is classified as ```Contract Extension```.
-- The Attachment '*Contract of Max Mustermann*' is also scanned with the OCR reader, which creates an Attachment in TASKANA and assigned it to the Classification ```Employment Contract```.
+- On the next day, the letter '*Extend Contract*' is then scanned with an OCR reader, which creates a Task in KADAI. The task has a deadline of 10-11-2023 and is classified as ```Contract Extension```.
+- The Attachment '*Contract of Max Mustermann*' is also scanned with the OCR reader, which creates an Attachment in KADAI and assigned it to the Classification ```Employment Contract```.
 - The planned timestamp of the Task is computed during the Task creation as following:
   - service Levels of the Attachment and Task are compared. 
   - The Classification ```Contract Extension``` has a Service Level of P7D, and Classification ```Employment Contract``` has a Service Level of P5D.

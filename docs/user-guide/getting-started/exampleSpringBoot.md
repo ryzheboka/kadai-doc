@@ -4,7 +4,7 @@ sidebar_position: 1
 
 # Example Spring Boot
 
-In the first 4 steps, we will set up TASKANA REST API without security. Then, we will show how to use
+In the first 4 steps, we will set up KADAI REST API without security. Then, we will show how to use
 the resulting REST API with [postman](https://www.postman.com/). This guide then sets up security.
 In the end of the guide, we will add the UI.
 
@@ -22,7 +22,7 @@ In order to set up the example, please install:
 
 Note: Please name your packages, folders and files exactly like in the example!
 
-## Set up TASKANA REST-API without security
+## Set up KADAI REST-API without security
 
 ### Step 1: Initialize an empty project
 
@@ -64,22 +64,22 @@ of step 2. After adding the dependencies, please reload maven and recompile the 
 </dependency>
 ```
 
-** 3. taskana dependencies: **
+** 3. kadai dependencies: **
 
 ```
 <dependency>
-    <groupId>pro.taskana</groupId>
-    <artifactId>taskana-common-data</artifactId>
+    <groupId>io.kadai</groupId>
+    <artifactId>kadai-common-data</artifactId>
     <version>8.1.0</version>
 </dependency>
 <dependency>
-    <groupId>pro.taskana</groupId>
-    <artifactId>taskana-common-logging</artifactId>
+    <groupId>io.kadai</groupId>
+    <artifactId>kadai-common-logging</artifactId>
     <version>8.1.0</version>
 </dependency>
 <dependency>
-    <groupId>pro.taskana</groupId>
-    <artifactId>taskana-rest-spring</artifactId>
+    <groupId>io.kadai</groupId>
+    <artifactId>kadai-rest-spring</artifactId>
     <version>8.1.0</version>
 </dependency>
 ```
@@ -106,18 +106,18 @@ of step 2. After adding the dependencies, please reload maven and recompile the 
     <version>2.0.0.RELEASE</version>
 </dependency>
 <dependency>
-    <groupId>pro.taskana</groupId>
-    <artifactId>taskana-common-logging</artifactId>
+    <groupId>io.kadai</groupId>
+    <artifactId>kadai-common-logging</artifactId>
     <version>8.1.0</version>
 </dependency>
 <dependency>
-    <groupId>pro.taskana</groupId>
-    <artifactId>taskana-rest-spring</artifactId>
+    <groupId>io.kadai</groupId>
+    <artifactId>kadai-rest-spring</artifactId>
     <version>8.1.0</version>
 </dependency>
 <dependency>
-    <groupId>pro.taskana</groupId>
-    <artifactId>taskana-common-data</artifactId>
+    <groupId>io.kadai</groupId>
+    <artifactId>kadai-common-data</artifactId>
     <version>8.1.0</version>
 </dependency>
 <dependency>
@@ -141,17 +141,17 @@ the [spring documentation](https://docs.spring.io/spring-boot/docs/current/refer
 You need to add following content into that file:
 
 ```
-logging.level.pro.taskana=INFO
+logging.level.io.kadai=INFO
 logging.level.org.springframework=INFO
-server.servlet.context-path=/taskana
-taskana.routing.dmn.upload.path=/tmp/routing.dmn
-######## Taskana DB #######
+server.servlet.context-path=/kadai
+kadai.routing.dmn.upload.path=/tmp/routing.dmn
+######## Kadai DB #######
 ######## h2 configuration ########
-spring.datasource.url=jdbc:h2:mem:taskana;NON_KEYWORDS=KEY,VALUE;IGNORECASE=TRUE;DB_CLOSE_ON_EXIT=FALSE;LOCK_MODE=0
+spring.datasource.url=jdbc:h2:mem:kadai;NON_KEYWORDS=KEY,VALUE;IGNORECASE=TRUE;DB_CLOSE_ON_EXIT=FALSE;LOCK_MODE=0
 spring.datasource.driverClassName=org.h2.Driver
 spring.datasource.username=sa
 spring.datasource.password=sa
-taskana.schemaName=TASKANA
+kadai.schemaName=KADAI
 ######## h2 console configuration ########
 ########spring.h2.console.enabled=true
 ########spring.h2.console.path=/h2-console
@@ -166,7 +166,7 @@ taskana.schemaName=TASKANA
 ########spring.datasource.username=postgres
 ########spring.datasource.password=postgres
 ######## ORACLE configuration ########
-########spring.datasource.url=jdbc:oracle:thin:@//localhost:5103/TASKANA
+########spring.datasource.url=jdbc:oracle:thin:@//localhost:5103/KADAI
 ########spring.datasource.driverClassName=oracle.jdbc.OracleDriver
 ########spring.datasource.username=TEST_USER
 ########spring.datasource.password=testPassword
@@ -195,35 +195,35 @@ server.tomcat.max-swallow-size=-1
 server.tomcat.remoteip.internal-proxies=.*
 server.forward-headers-strategy=native
 ####### Properties for AccessIdController to connect to LDAP
-taskana.ldap.serverUrl=ldap://localhost:10389
-taskana.ldap.bindDn=uid=admin
-taskana.ldap.bindPassword=secret
-taskana.ldap.baseDn=ou=Test,O=TASKANA
-taskana.ldap.userSearchBase=cn=users
-taskana.ldap.userSearchFilterName=objectclass
-taskana.ldap.userSearchFilterValue=person
-taskana.ldap.userFirstnameAttribute=givenName
-taskana.ldap.userLastnameAttribute=sn
-taskana.ldap.userFullnameAttribute=cn
-taskana.ldap.userPhoneAttribute=phoneNumber
-taskana.ldap.userMobilePhoneAttribute=mobileNumber
-taskana.ldap.userEmailAttribute=email
-taskana.ldap.userOrglevel1Attribute=orgLevel1
-taskana.ldap.userOrglevel2Attribute=orgLevel2
-taskana.ldap.userOrglevel3Attribute=someDepartement
-taskana.ldap.userOrglevel4Attribute=orgLevel4
-taskana.ldap.userIdAttribute=uid
-taskana.ldap.userMemberOfGroupAttribute=memberOf
-taskana.ldap.userPermissionsAttribute=permission
-taskana.ldap.groupSearchBase=
-taskana.ldap.groupSearchFilterName=objectclass
-taskana.ldap.groupSearchFilterValue=groupofuniquenames
-taskana.ldap.groupNameAttribute=cn
-taskana.ldap.minSearchForLength=3
-taskana.ldap.maxNumberOfReturnedAccessIds=50
-taskana.ldap.groupsOfUser=uniquemember
+kadai.ldap.serverUrl=ldap://localhost:10389
+kadai.ldap.bindDn=uid=admin
+kadai.ldap.bindPassword=secret
+kadai.ldap.baseDn=ou=Test,O=KADAI
+kadai.ldap.userSearchBase=cn=users
+kadai.ldap.userSearchFilterName=objectclass
+kadai.ldap.userSearchFilterValue=person
+kadai.ldap.userFirstnameAttribute=givenName
+kadai.ldap.userLastnameAttribute=sn
+kadai.ldap.userFullnameAttribute=cn
+kadai.ldap.userPhoneAttribute=phoneNumber
+kadai.ldap.userMobilePhoneAttribute=mobileNumber
+kadai.ldap.userEmailAttribute=email
+kadai.ldap.userOrglevel1Attribute=orgLevel1
+kadai.ldap.userOrglevel2Attribute=orgLevel2
+kadai.ldap.userOrglevel3Attribute=someDepartement
+kadai.ldap.userOrglevel4Attribute=orgLevel4
+kadai.ldap.userIdAttribute=uid
+kadai.ldap.userMemberOfGroupAttribute=memberOf
+kadai.ldap.userPermissionsAttribute=permission
+kadai.ldap.groupSearchBase=
+kadai.ldap.groupSearchFilterName=objectclass
+kadai.ldap.groupSearchFilterValue=groupofuniquenames
+kadai.ldap.groupNameAttribute=cn
+kadai.ldap.minSearchForLength=3
+kadai.ldap.maxNumberOfReturnedAccessIds=50
+kadai.ldap.groupsOfUser=uniquemember
 # Embedded Spring LDAP server
-spring.ldap.embedded.base-dn=OU=Test,O=TASKANA
+spring.ldap.embedded.base-dn=OU=Test,O=KADAI
 spring.ldap.embedded.credential.username=uid=admin
 spring.ldap.embedded.credential.password=secret
 spring.ldap.embedded.ldif=classpath:example-users.ldif
@@ -231,58 +231,58 @@ spring.ldap.embedded.port=10389
 spring.ldap.embedded.validation.enabled=false
 ```
 
-#### Step 3b: Add taskana.properties
+#### Step 3b: Add kadai.properties
 
-Create ```taskana.properties``` in the resources folder. This file contains taskana specific
+Create ```kadai.properties``` in the resources folder. This file contains kadai specific
 configuration, like custom holidays etc.. Please
-copy following content into ```taskana.properties```:
+copy following content into ```kadai.properties```:
 
 ```
-taskana.roles.user=cn=ksc-users,cn=groups,OU=Test,O=TASKANA | teamlead-1 | teamlead-2 | user-1-1 | user-1-2 | user-2-1 | user-2-2 | user-b-1 | user-b-2
-taskana.roles.admin=admin | uid=admin,cn=users,OU=Test,O=TASKANA
-taskana.roles.business_admin=businessadmin | cn=business-admins,cn=groups,OU=Test,O=TASKANA
-taskana.roles.monitor=monitor | cn=monitor-users,cn=groups,OU=Test,O=TASKANA
-taskana.roles.task_admin=taskadmin
-taskana.domains=DOMAIN_A|DOMAIN_B|DOMAIN_C|DOMAIN_TEST
-taskana.user.minimalPermissionsToAssignDomains=READ | OPEN
-taskana.classification.types=TASK|DOCUMENT
-taskana.classification.categories.task=EXTERNAL| manual| autoMAtic| Process
-taskana.classification.categories.document=EXTERNAL
-taskana.jobs.maxRetries=3
-taskana.jobs.batchSize=50
-taskana.jobs.runEvery=P1D
-taskana.jobs.firstRunAt=2018-07-25T08:00:00Z
-taskana.jobs.cleanup.task.minimumAge=P14D
-taskana.jobs.cleanup.history.simple.batchSize=50
-taskana.jobs.history.cleanup.firstRunAt=2018-07-25T08:00:00Z
-taskana.jobs.cleanup.history.simple.minimumAge=P14D
-taskana.jobs.history.cleanup.runEvery=P1D
-taskana.jobs.refresh.user.runEvery=P1D
-taskana.jobs.refresh.user.firstRunAt=2018-07-25T23:00:00Z
-taskana.workingTime.holidays.german.enabled=true
-taskana.workingTime.holidays.german.corpus-christi.enabled=true
-taskana.history.logger.name=AUDIT
-taskana.routing.dmn=/dmn-table.dmn
+kadai.roles.user=cn=ksc-users,cn=groups,OU=Test,O=KADAI | teamlead-1 | teamlead-2 | user-1-1 | user-1-2 | user-2-1 | user-2-2 | user-b-1 | user-b-2
+kadai.roles.admin=admin | uid=admin,cn=users,OU=Test,O=KADAI
+kadai.roles.business_admin=businessadmin | cn=business-admins,cn=groups,OU=Test,O=KADAI
+kadai.roles.monitor=monitor | cn=monitor-users,cn=groups,OU=Test,O=KADAI
+kadai.roles.task_admin=taskadmin
+kadai.domains=DOMAIN_A|DOMAIN_B|DOMAIN_C|DOMAIN_TEST
+kadai.user.minimalPermissionsToAssignDomains=READ | OPEN
+kadai.classification.types=TASK|DOCUMENT
+kadai.classification.categories.task=EXTERNAL| manual| autoMAtic| Process
+kadai.classification.categories.document=EXTERNAL
+kadai.jobs.maxRetries=3
+kadai.jobs.batchSize=50
+kadai.jobs.runEvery=P1D
+kadai.jobs.firstRunAt=2018-07-25T08:00:00Z
+kadai.jobs.cleanup.task.minimumAge=P14D
+kadai.jobs.cleanup.history.simple.batchSize=50
+kadai.jobs.history.cleanup.firstRunAt=2018-07-25T08:00:00Z
+kadai.jobs.cleanup.history.simple.minimumAge=P14D
+kadai.jobs.history.cleanup.runEvery=P1D
+kadai.jobs.refresh.user.runEvery=P1D
+kadai.jobs.refresh.user.firstRunAt=2018-07-25T23:00:00Z
+kadai.workingTime.holidays.german.enabled=true
+kadai.workingTime.holidays.german.corpus-christi.enabled=true
+kadai.history.logger.name=AUDIT
+kadai.routing.dmn=/dmn-table.dmn
 # enable or disable the jobscheduler at all
 # set it to false and no jobs are running
-taskana.jobs.scheduler.enabled=false
+kadai.jobs.scheduler.enabled=false
 # wait time before the first job run in millis
-taskana.jobs.scheduler.initialStartDelay=100
+kadai.jobs.scheduler.initialStartDelay=100
 # sleeping time befor the next job runs
-taskana.jobs.scheduler.period=12
+kadai.jobs.scheduler.period=12
 # timeunit for the sleeping period
 # Possible values: MILLISECONDS, SECONDS, MINUTES, HOURS, DAYS
-taskana.jobs.scheduler.periodTimeUnit=HOURS
-taskana.jobs.cleanup.task.enable=true
-taskana.jobs.priority.task.enable=true
-taskana.jobs.cleanup.workbasket.enable=true
-taskana.jobs.refresh.user.enable=true
-taskana.jobs.cleanup.history.simple.enable=false
+kadai.jobs.scheduler.periodTimeUnit=HOURS
+kadai.jobs.cleanup.task.enable=true
+kadai.jobs.priority.task.enable=true
+kadai.jobs.cleanup.workbasket.enable=true
+kadai.jobs.refresh.user.enable=true
+kadai.jobs.cleanup.history.simple.enable=false
 ```
 
 ### Step 4: Add rest configuration
 
-First, Add ```@ComponentScan({"pro.taskana","com.example"})``` as annotation above the class
+First, Add ```@ComponentScan({"io.kadai","com.example"})``` as annotation above the class
 definition of the ExampleApplication and a corresponding import to this class. This will allow the
 apllication to find needed components.
 
@@ -306,10 +306,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
-import pro.taskana.TaskanaConfiguration;
-import pro.taskana.common.api.TaskanaEngine;
-import pro.taskana.common.internal.configuration.DbSchemaCreator;
-import pro.taskana.sampledata.SampleDataGenerator;
+import io.kadai.KadaiConfiguration;
+import io.kadai.common.api.KadaiEngine;
+import io.kadai.common.internal.configuration.DbSchemaCreator;
+import io.kadai.sampledata.SampleDataGenerator;
 
 @Configuration
 public class ExampleRestConfiguration {
@@ -320,17 +320,17 @@ public class ExampleRestConfiguration {
   }
 
   @Bean
-  @DependsOn("taskanaConfiguration") // generate sample data after schema was inserted
+  @DependsOn("kadaiConfiguration") // generate sample data after schema was inserted
   public SampleDataGenerator generateSampleData(
-      TaskanaConfiguration taskanaConfiguration,
+      KadaiConfiguration kadaiConfiguration,
       DataSource dataSource,
       @Value("${generateSampleData:true}") boolean generateSampleData)
       throws SQLException {
     DbSchemaCreator dbSchemaCreator =
-        new DbSchemaCreator(dataSource, taskanaConfiguration.getSchemaName());
+        new DbSchemaCreator(dataSource, kadaiConfiguration.getSchemaName());
     dbSchemaCreator.run();
     SampleDataGenerator sampleDataGenerator =
-        new SampleDataGenerator(dataSource, taskanaConfiguration.getSchemaName());
+        new SampleDataGenerator(dataSource, kadaiConfiguration.getSchemaName());
     if (generateSampleData) {
       sampleDataGenerator.generateSampleData();
     }
@@ -339,9 +339,9 @@ public class ExampleRestConfiguration {
 
   @Bean
   @DependsOn("generateSampleData")
-  public TaskanaEngine getTaskanaEngine(TaskanaConfiguration taskanaConfiguration)
+  public KadaiEngine getKadaiEngine(KadaiConfiguration kadaiConfiguration)
       throws SQLException {
-    return TaskanaEngine.buildTaskanaEngine(taskanaConfiguration);
+    return KadaiEngine.buildKadaiEngine(kadaiConfiguration);
   }
 
   // only required to let the adapter example connect to the same database
@@ -351,13 +351,13 @@ public class ExampleRestConfiguration {
   }
   
   @Bean
-  @ConditionalOnMissingBean(TaskanaConfiguration.class)
-  public TaskanaConfiguration taskanaConfiguration(
+  @ConditionalOnMissingBean(KadaiConfiguration.class)
+  public KadaiConfiguration kadaiConfiguration(
       DataSource dataSource,
-      @Qualifier("taskanaPropertiesFileName") String propertiesFileName,
-      @Qualifier("taskanaPropertiesDelimiter") String delimiter) {
-    return new TaskanaConfiguration.Builder(dataSource, true, "TASKANA")
-        .initTaskanaProperties(propertiesFileName, delimiter)
+      @Qualifier("kadaiPropertiesFileName") String propertiesFileName,
+      @Qualifier("kadaiPropertiesDelimiter") String delimiter) {
+    return new KadaiConfiguration.Builder(dataSource, true, "KADAI")
+        .initKadaiProperties(propertiesFileName, delimiter)
         .build();
   }
 }
@@ -371,7 +371,7 @@ Recompile the project and then start the DemoApplication in your IDE. You can no
 request:
 
 ```
-GET http://localhost:8080/taskana/api/v1/classifications
+GET http://localhost:8080/kadai/api/v1/classifications
 ```
 
 You should get a list of different Classifications in the body of the response. Here is a screenshot
@@ -382,13 +382,13 @@ of the request and the response in [postman](https://www.postman.com/):
 You can also request Tasks using following command:
 
 ```
-GET http://localhost:8080/taskana/api/v1/tasks
+GET http://localhost:8080/kadai/api/v1/tasks
 ```
 
-At this point, full TASKANA REST-API functionality is available without security or authorization.
+At this point, full KADAI REST-API functionality is available without security or authorization.
 They will be added in the next steps.
 
-## Set up TASKANA Security
+## Set up KADAI Security
 
 Our example application uses [ldap](https://ldap.com/learn-about-ldap/) for its authorization.
 First, add a ```security``` package into the ```com.example.demo``` package (in
@@ -425,19 +425,19 @@ You also need to remove following lines from the ``ExampleRestConfiguration.java
 
 ```
  @Bean
-@ConditionalOnMissingBean(TaskanaConfiguration.class)
-public TaskanaConfiguration taskanaConfiguration(
+@ConditionalOnMissingBean(KadaiConfiguration.class)
+public KadaiConfiguration kadaiConfiguration(
     DataSource dataSource,
-    @Qualifier("taskanaPropertiesFileName") String propertiesFileName,
-    @Qualifier("taskanaPropertiesDelimiter") String delimiter) {
-  return new TaskanaConfiguration.Builder(dataSource, true, "TASKANA")
-      .initTaskanaProperties(propertiesFileName, delimiter)
+    @Qualifier("kadaiPropertiesFileName") String propertiesFileName,
+    @Qualifier("kadaiPropertiesDelimiter") String delimiter) {
+  return new KadaiConfiguration.Builder(dataSource, true, "KADAI")
+      .initKadaiProperties(propertiesFileName, delimiter)
       .build();
 }
 ```
 
 This way, you don't disable security manually.
-Deleted because TaskanaEngineConfiguration doesn't exist anymore
+Deleted because KadaiEngineConfiguration doesn't exist anymore
 
 ### Step 7: Add BootWebSecurityConfigurer.java
 
@@ -475,9 +475,9 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.jaasapi.JaasApiIntegrationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import pro.taskana.common.rest.SpringSecurityToJaasFilter;
+import io.kadai.common.rest.SpringSecurityToJaasFilter;
 
-/** Default basic configuration for taskana web example. */
+/** Default basic configuration for kadai web example. */
 @Configuration
 public class BootWebSecurityConfigurer {
 
@@ -491,11 +491,11 @@ public class BootWebSecurityConfigurer {
   private final boolean enableCsrf;
 
   public BootWebSecurityConfigurer(
-      @Value("${taskana.ldap.serverUrl:ldap://localhost:10389}") String ldapServerUrl,
-      @Value("${taskana.ldap.baseDn:OU=Test,O=TASKANA}") String ldapBaseDn,
-      @Value("${taskana.ldap.userDnPatterns:uid={0},cn=users}") String ldapUserDnPatterns,
-      @Value("${taskana.ldap.groupSearchBase:cn=groups}") String ldapGroupSearchBase,
-      @Value("${taskana.ldap.groupSearchFilter:uniqueMember={0}}") String ldapGroupSearchFilter,
+      @Value("${kadai.ldap.serverUrl:ldap://localhost:10389}") String ldapServerUrl,
+      @Value("${kadai.ldap.baseDn:OU=Test,O=KADAI}") String ldapBaseDn,
+      @Value("${kadai.ldap.userDnPatterns:uid={0},cn=users}") String ldapUserDnPatterns,
+      @Value("${kadai.ldap.groupSearchBase:cn=groups}") String ldapGroupSearchBase,
+      @Value("${kadai.ldap.groupSearchFilter:uniqueMember={0}}") String ldapGroupSearchFilter,
       @Value("${enableCsrf:false}") boolean enableCsrf,
       @Value("${devMode:false}") boolean devMode) {
     this.enableCsrf = enableCsrf;
@@ -763,7 +763,7 @@ Your project structure should now look like this:
 First, restart the ExampleApplication. Try to make a request like in the previous step, for example:
 
 ```
-GET http://localhost:8080/taskana/api/v1/tasks
+GET http://localhost:8080/kadai/api/v1/tasks
 ```
 
 You should get the 401 Unauthorized response. Now, you can authorize yourself using basicAuth.
@@ -771,7 +771,7 @@ In [postman](https://www.postman.com/), go to the "Authorization" tab. There, se
 type "admin" as user and "admin" as password. Then, you can make the following request:
 
 ```
-GET http://localhost:8080/taskana/api/v1/tasks
+GET http://localhost:8080/kadai/api/v1/tasks
 ```
 
 It should return a list of Tasks in the response body. Here is a screenshot of the request and the
@@ -779,7 +779,7 @@ response in [postman](https://www.postman.com/):
 
 ![example request](../static/getting-started/request-security.png)
 
-## Set up TASKANA UI
+## Set up KADAI UI
 
 ### Step 11: Add web dependencies
 
@@ -787,8 +787,8 @@ Add following dependencies to your pom and reload maven:
 
 ```
 <dependency>
-    <groupId>pro.taskana</groupId>
-    <artifactId>taskana-web</artifactId>
+    <groupId>io.kadai</groupId>
+    <artifactId>kadai-web</artifactId>
     <version>8.1.0</version>
 </dependency>
 <dependency>
@@ -811,7 +811,7 @@ These will be added in the steps 12a, 12b and 12c.
 
 #### Step 12a: Add ```LoginController.java```
 
-The LoginController will handle the login into taskana. It will need the ```templates/login.html```
+The LoginController will handle the login into kadai. It will need the ```templates/login.html```
 in the ```resources``` folder. You can download the templates folder here:
 
 <div className={styles.buttons}>
@@ -892,20 +892,20 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import pro.taskana.common.internal.util.ResourceUtil;
+import io.kadai.common.internal.util.ResourceUtil;
 
 import java.io.IOException;
 
 @Controller
 public class ResourcesController {
 
-    public static final String TASKANA_CUSTOMIZATION_FILE_NAME = "taskana-customization.json";
+    public static final String KADAI_CUSTOMIZATION_FILE_NAME = "kadai-customization.json";
 
     @GetMapping(
-            value = "/environments/data-sources/taskana-customization.json",
+            value = "/environments/data-sources/kadai-customization.json",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> taskanaCustomization() throws IOException {
-        return ResponseEntity.ok(readResourceAsString(TASKANA_CUSTOMIZATION_FILE_NAME));
+    public ResponseEntity<String> kadaiCustomization() throws IOException {
+        return ResponseEntity.ok(readResourceAsString(KADAI_CUSTOMIZATION_FILE_NAME));
     }
 
     // the environment-information.json file will be served via "static" folder
@@ -928,7 +928,7 @@ public class ResourcesController {
 
 #### Step 12c: Add ViewController.java
 
-The ViewController manages the root view of taskana. Copy following code
+The ViewController manages the root view of kadai. Copy following code
 into ```ViewController.java```:
 
 ```
@@ -941,7 +941,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class ViewController {
 
-    @GetMapping(path = {"", "taskana/**"})
+    @GetMapping(path = {"", "kadai/**"})
     public String index() {
         return "forward:/index.html";
     }
@@ -1026,7 +1026,7 @@ Your project structure should look like this:
 ### Step 14: Start and open the application
 
 Recompile the application, then go to the DemoApplication class in the IDE and start it. Then
-type ```localhost:8080/taskana``` into your browser. You should see the login screen:
+type ```localhost:8080/kadai``` into your browser. You should see the login screen:
 
 ![Log in](../static/getting-started/login.png)
 

@@ -4,14 +4,14 @@ sidebar_position: 7
 
 # History and Custom Properties
 
-The concept of History in TASKANA is explained in more detail [here](../features/taskanaHistorySPI.md). 
+The concept of History in KADAI is explained in more detail [here](../features/kadaiHistorySPI.md). 
 
 ## History
 
-- ``taskana.history.deletion.on.task.deletion.enabled``: After deletion of a Task, all history events related to that Task will also be deleted.
-- ``` taskana.historylogger.name```: The name of the logger that writes to the audit file.
+- ``kadai.history.deletion.on.task.deletion.enabled``: After deletion of a Task, all history events related to that Task will also be deleted.
+- ``` kadai.historylogger.name```: The name of the logger that writes to the audit file.
         Example:
-        ``` taskana.historylogger.name=AUDIT ```
+        ``` kadai.historylogger.name=AUDIT ```
 
 ## Custom
 

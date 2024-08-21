@@ -7,9 +7,9 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: 'Documentation',
-  tagline: 'TASKANA Documentation',
+  tagline: 'KADAI Documentation',
   url: 'https://holgerhagen.github.io',
-  baseUrl: '/taskana-doc',
+  baseUrl: '/kadai-doc',
   trailingSlash: false,
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
@@ -18,7 +18,7 @@ const config = {
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
   organizationName: 'holgerhagen', // Usually your GitHub org/user name.
-  projectName: 'taskana-doc', // Usually your repo name.
+  projectName: 'kadai-doc', // Usually your repo name.
 
   // Even if you don't use internalization, you can use this field to set useful
   // metadata like html lang. For example, if your site is Chinese, you may want
@@ -56,7 +56,7 @@ const config = {
         respectPrefersColorScheme: false,
       },
       navbar: {
-        title: 'TASKANA',
+        title: 'KADAI',
         hideOnScroll: true,
         logo: {
           alt: 'My Site Logo',
@@ -76,7 +76,7 @@ const config = {
             label: 'Contact Us',
           },
           {
-            href: 'https://github.com/Taskana/taskana',
+            href: 'https://github.com/kadai-io/kadai',
             label: 'GitHub',
             position: 'right',
           },
@@ -105,7 +105,7 @@ const config = {
               },
               {
                 label: 'GitHub',
-                href: 'https://github.com/Taskana/taskana',
+                href: 'https://github.com/kadai-io/kadai',
               }
             ]
 
@@ -140,7 +140,7 @@ const config = {
           }
 
         ],
-        copyright: `Built with Docusaurus. TASKANA is a brand name registred by Novatec Consulting GmbH`,
+        copyright: `Built with Docusaurus. KADAI is a brand name registered by Envite Consulting GmbH`,
 
       },
       prism: {

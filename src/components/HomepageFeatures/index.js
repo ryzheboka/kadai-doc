@@ -17,7 +17,7 @@ const FeatureList = [
     Svg: require('@site/static/img/routing.png').default,
     description: (
       <>
-        TASKANA can route Tasks into different Workbaskets. The routing is performed automatically according to customized rules.
+        KADAI can route Tasks into different Workbaskets. The routing is performed automatically according to customized rules.
       </>
     ),
   },
@@ -26,7 +26,7 @@ const FeatureList = [
     Svg: require('@site/static/img/monitoring-logo.png').default,
     description: (
       <>
-        TASKANA visualizes the current state of work. This includes Tasks, their states, their due dates etc.. For example, you can view the number of due Tasks plotted by time.
+        KADAI visualizes the current state of work. This includes Tasks, their states, their due dates etc.. For example, you can view the number of due Tasks plotted by time.
       </>
     ),
   },
@@ -36,7 +36,7 @@ const FeatureList = [
     Svg: require('@site/static/img/PriorityNew.png').default,
     description: (
       <>
-        In TASKANA, tasks can be prioritized manually or automatically. They can also be reprioritized dynamically during their lifetime.
+        In KADAI, tasks can be prioritized manually or automatically. They can also be reprioritized dynamically during their lifetime.
       </>
     ),
   }

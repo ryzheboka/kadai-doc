@@ -8,16 +8,16 @@ import Drawio from '@theme/Drawio'
 import entities from '!!raw-loader!../static/core-concepts/entities.drawio';
 import architecture from '!!raw-loader!../static/core-concepts/architecture.drawio';
 
-TASKANA is an open source Task Management System. It includes defining and creating tasks and keeping track of their execution, as well as distributing them to their responsible users. TASKANA also offers options for detailed descriptions of each task using attachments, object references, and many other properties. In the following article, the basic entities of TASKANA and related concepts are explained. 
+KADAI is an open source Task Management System. It includes defining and creating tasks and keeping track of their execution, as well as distributing them to their responsible users. KADAI also offers options for detailed descriptions of each task using attachments, object references, and many other properties. In the following article, the basic entities of KADAI and related concepts are explained. 
 
-In order to provide its functionality, TASKANA consists of different components. They are shown in the diagram below. As different components provide different features, the description of relevant modules can be found [here](../reference/modules.md). You can read more about the Java Library and its usage [here](./javaApiUsage). 
+In order to provide its functionality, KADAI consists of different components. They are shown in the diagram below. As different components provide different features, the description of relevant modules can be found [here](../reference/modules.md). You can read more about the Java Library and its usage [here](./javaApiUsage). 
 
 <Drawio content={architecture} />
 
-## TASKANA Entities
-All TASKANA Entities can be found in the Java API. You can read more about our Java API [here](./javaApiUsage.md). For better readability, entities are capitalized in the documentation. 
+## KADAI Entities
+All KADAI Entities can be found in the Java API. You can read more about our Java API [here](./javaApiUsage.md). For better readability, entities are capitalized in the documentation. 
 
-TASKANA operates using Tasks, Classifications and Workbaskets. Additional entities are Attachments, ObjectReferences and WorkbasketAccessIds. The entities are stored in the [configured database](../configuration/database.md). You can see the detailed data model [here](../reference/dataModel.md).
+KADAI operates using Tasks, Classifications and Workbaskets. Additional entities are Attachments, ObjectReferences and WorkbasketAccessIds. The entities are stored in the [configured database](../configuration/database.md). You can see the detailed data model [here](../reference/dataModel.md).
 
 <Drawio content={entities} />
 
@@ -49,7 +49,7 @@ The Classification entity represents a category of Tasks. The Tasks with the sam
 
 There are different options for accessing a Workbasket. You can read more about them and other permissions [here](./securityAndPermissions#access-to-workbaskets).
 
-TASKANA provides different options for choosing a Workbasket for a specific Task. For example, there is the Task Routing feature. Task Routing allows to implement custom logic for determining the Workbasket for a Task. 
+KADAI provides different options for choosing a Workbasket for a specific Task. For example, there is the Task Routing feature. Task Routing allows to implement custom logic for determining the Workbasket for a Task. 
 
 ### WorkbasketAccessItem
 
@@ -57,11 +57,11 @@ A WorkbasketAccessItem specifies permissions for a given Workbasket and a specif
 
 ### Summary Objects
 
-TASKANA provides the possibility to add large attributes to the entities. To minimize the computational load created by these large attributes, TASKANA introduces summaries of its entities. Summary objects contain only the most important information. They are light versions of the original object. For example, TaskSummary doesn't contain Attachments or SecondaryObjectReferences. When asked to return a List of entities, our APIs return summaries of the objects. You can always get the full object using the information from the summary of this object.
+KADAI provides the possibility to add large attributes to the entities. To minimize the computational load created by these large attributes, KADAI introduces summaries of its entities. Summary objects contain only the most important information. They are light versions of the original object. For example, TaskSummary doesn't contain Attachments or SecondaryObjectReferences. When asked to return a List of entities, our APIs return summaries of the objects. You can always get the full object using the information from the summary of this object.
 
 ## Operations on entities
 
-TASKANA provides following operations on its entities:
+KADAI provides following operations on its entities:
  - Creating
  - Updating
  - Deleting
@@ -70,4 +70,4 @@ TASKANA provides following operations on its entities:
 You can read technical details about operating on entities [using the Java-API](./javaApiUsage.md) and [using the REST-API](./restApi.md).
 
 ## List of important features
-You can look up important features of TASKANA [here](../../category/features).
+You can look up important features of KADAI [here](../../category/features).

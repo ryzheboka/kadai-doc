@@ -8,8 +8,8 @@ export default function Home() {
   const { siteConfig } = useDocusaurusContext();
   return (
     <Layout
-      title={`TASKANA Documentation`}
-      description="TASKANA Documentation">
+      title={`KADAI Documentation`}
+      description="KADAI Documentation">
       <Hero />
       <main>
         <HomepageFeatures />
