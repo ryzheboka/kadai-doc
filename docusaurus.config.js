@@ -9,7 +9,7 @@ const config = {
   title: 'Documentation',
   tagline: 'KADAI Documentation',
   url: 'https://holgerhagen.github.io',
-  baseUrl: '/kadai-doc',
+  baseUrl: '/taskana-doc',
   trailingSlash: false,
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
@@ -81,7 +81,7 @@ const config = {
             position: 'right',
           },
           {
-            href: 'https://taskana.azurewebsites.net/taskana/docs/rest/rest-api.html',
+            href: 'https://kadai-io.azurewebsites.net/kadai/swagger-ui/index.html',
             label: 'REST API Doc',
             position: 'right',
           },
@@ -124,7 +124,7 @@ const config = {
               },
               {
                 label: 'REST API Documentation',
-                href: 'https://taskana.azurewebsites.net/taskana/docs/rest/rest-api.html',
+                href: 'https://kadai-io.azurewebsites.net/kadai/swagger-ui/index.html',
               }
             ]
           },
