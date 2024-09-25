@@ -8,8 +8,8 @@ const darkCodeTheme = require('prism-react-renderer').themes.github;
 const config = {
   title: 'Documentation',
   tagline: 'KADAI Documentation',
-  url: 'https://holgerhagen.github.io',
-  baseUrl: '/taskana-doc',
+  url: 'https://kadai-io.github.io',
+  baseUrl: '/kadai-doc',
   trailingSlash: false,
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
@@ -17,7 +17,7 @@ const config = {
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'holgerhagen', // Usually your GitHub org/user name.
+  organizationName: 'kadai-io', // Usually your GitHub org/user name.
   projectName: 'kadai-doc', // Usually your repo name.
 
   // Even if you don't use internalization, you can use this field to set useful
