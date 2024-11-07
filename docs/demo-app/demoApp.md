@@ -25,7 +25,7 @@ To navigate between different pages, select the menu using the three point icon 
     - Manage Classifications
     - Perform other admin activities
 - **Monitor**
-    - Observe current state of work
+    - Observe the current state of work
 - **Workplace**
     - See available Tasks
     - Perform actions on Tasks
